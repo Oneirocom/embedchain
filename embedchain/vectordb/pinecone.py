@@ -101,10 +101,11 @@ class PineconeDB(BaseVectorDB):
         """
         existing_ids = list()
         metadatas = []
+        batch_size=100
 
         if ids is not None:
-            for i in range(0, len(ids), 1000):
-                result = self.pinecone_index.fetch(ids=ids[i : i + 1000])
+            for i in range(0, len(ids), batch_size):
+                result = self.pinecone_index.fetch(ids=ids[i : i + batch_size])
                 vectors = result.get("vectors")
                 batch_existing_ids = list(vectors.keys())
                 existing_ids.extend(batch_existing_ids)
